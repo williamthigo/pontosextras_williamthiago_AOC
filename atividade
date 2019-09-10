@@ -1,0 +1,55 @@
+.data
+	myArray: .space 16 #array[4] = {3,2,5,1}
+.text
+	main:
+		#array[4] = {3,2,5,1}
+		addi $s0, $zero, 3
+		addi $s1, $zero, 2
+		addi $s2, $zero, 5
+		addi $s2, $zero, 1
+		
+		addi $t0,$zero,0
+			sw $s0, myArray($t0)
+		addi $t0, $t0, 4
+			sw $s1, myArray($t0)
+		addi $t0, $t0, 4
+			sw $s2, myArray($t0)
+		addi $t0, $t0, 4
+			sw $s3, myArray($t0)
+		
+		addi $t1,4 #n = 4
+		addi $t2,0 #int c = 0
+		addi $t3,0 #int d
+		addi $t4,0 #int swap
+		addi $t5,0 #index
+		
+		
+		while:
+			bgt $t2, $t1, while2 #for(c=0; c < n)
+			addi $t2, $t2, 1 #c++
+			li $v0, 5
+			sw  $v0,myArray($t5)
+			addi $t5, $t5, 1 #incrementa o index	
+			syscall
+		while2:
+			addi $t2, $zero, 0 #int c = 0
+			addi $t7, $zero, 0
+			addi $t8, $t7, 0
+			bgt $t2, (sub $t5,$t1,1), while3 #for(c=0; c < n-1)
+			while 3:
+				bgt $t3, (sub $t6,sub($t2,1)), exit
+					bgt myArray($t7), myArray($t8), troca
+						addi $t7,$t7,4
+						addi $t8,$t7,4
+						addi $t3,$t3,1
+		troca:
+			sw $t4, myArray($t7)
+			sw myArray($t7),myArray($t8)
+			sw myArray($t8),$t4
+			jr while 3
+			
+		exit:
+			li $v0,10
+			syscall
+	
+	
